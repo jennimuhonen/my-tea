@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import home from './home';
+import addTea from './addTea';
+import myTea from './myTea';
+
+/*
+Lähteet:
+- Kurssin verkkosivusto: https://haagahelia.github.io/mobilecourse/
+- React Native Paper: https://oss.callstack.com/react-native-paper/ (Bottom Navigation)
+*/
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={home} />
+        <Tab.Screen name="My Tea" component={myTea} />
+        <Tab.Screen name="Add Tea" component={addTea} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
