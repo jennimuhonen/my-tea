@@ -16,9 +16,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Home" component={home} />
-        <Tab.Screen name="My Tea" component={myTea} />
-        <Tab.Screen name="Add Tea" component={addTea} />
+        <Tab.Screen name="Koti" component={home} />
+        <Tab.Screen name="Minun teeni" component={myTea} />
+        <Tab.Screen name="Lisää tee" component={addTea} />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -1,11 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
+import { useState } from 'react';
 
 export default function App() {
+  const [name, setName] = useState("");
+  const [place, setPlace] = useState("");
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TextInput
+      style={styles.textInput}
+      label='Teen nimi'
+      value={name}
+      />
+      <TextInput
+      style={styles.textInput}
+      label='Ostopaikka'
+      value={place}
+      />
+
+      <Button mode='contained' icon='content-save'>
+        Tallenna
+      </Button>
+      
     </View>
   );
 }
@@ -13,8 +30,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 5,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
+  textInput: {
+    width: '90%',
+    margin: 3,
+  }
 });
