@@ -1,7 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { app } from './firebaseConfig';
+import { getDatabase } from 'firebase/database';
 
-export default function App() {
+//Lähteet: Kurssimateriaali
+
+const db = getDatabase(app);
+
+export default function MyTea() {
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>

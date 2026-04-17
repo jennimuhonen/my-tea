@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import home from './home';
-import addTea from './addTea';
-import myTea from './myTea';
+import Home from './Home';
+import AddTea from './AddTea';
+import MyTea from './MyTea';
 
 /*
 Lähteet:
@@ -16,9 +16,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Koti" component={home} />
-        <Tab.Screen name="Minun teeni" component={myTea} />
-        <Tab.Screen name="Lisää tee" component={addTea} />
+        <Tab.Screen name="Koti" component={Home} />
+        <Tab.Screen name="Minun teeni" component={MyTea} />
+        <Tab.Screen name="Lisää tee" component={AddTea} />
       </Tab.Navigator>
     </NavigationContainer>
   );

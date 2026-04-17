@@ -8,7 +8,7 @@ import { getDatabase, ref, push } from 'firebase/database';
 
 const db = getDatabase(app);
 
-export default function App() {
+export default function AddTea() {
   const [tea, setTea] = useState({
     name: '',
     place: ''
