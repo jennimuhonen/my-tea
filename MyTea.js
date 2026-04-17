@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Card } from 'react-native-paper';
+import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import { Card, IconButton } from 'react-native-paper';
 import { app } from './firebaseConfig';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue, remove } from 'firebase/database';
 import { useState, useEffect } from 'react';
 
-//Lähteet: Kurssimateriaali
+/*
+Lähteet:
+- Kurssimateriaali ja kurssitehtävät
+- ChatGPT: tarkemmin käytöstä koodin seassa
+- React Native Paper: Icon Button, https://oss.callstack.com/react-native-paper/docs/components/IconButton/
+*/
 
 const db = getDatabase(app);
 
@@ -30,6 +35,16 @@ export default function MyTea() {
     })
   }, [])
 
+  //deleteItemia muokattu toimivaksi ChatGPT:n avustuksella
+
+  const deleteItem = async (id) => {
+    try {
+      await remove(ref(db, 'items/' + id));
+    } catch (error) {
+      Alert.alert('Virhe', 'Poistaminen ei onnistunut');
+    }
+  };
+
   return (
     <View>
       <FlatList
@@ -40,6 +55,12 @@ export default function MyTea() {
             <Card.Title title={item.name} />
             <Card.Content>
               <Text variant='bodyMedium'>Paikka: {item.place}</Text>
+              <IconButton
+              icon='delete-outline'
+              size={20}
+              iconColor='red'
+              onPress={() => deleteItem(item.id)}
+              />
             </Card.Content>
           </Card>
         }
