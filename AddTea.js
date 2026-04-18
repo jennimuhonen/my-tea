@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { app } from './firebaseConfig';
 import { getDatabase, ref, push } from 'firebase/database';
 
-//Lähteet: Kurssimateriaali, ChatGPT (tarkemmin käytöstä koodissa)
+/*
+Lähteet:
+- Kurssimateriaali
+- ChatGPT (tarkemmin käytöstä koodissa)
+*/
 
 const db = getDatabase(app);
 

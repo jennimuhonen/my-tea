@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
 import { app } from './firebaseConfig';
@@ -10,11 +9,12 @@ Lähteet:
 - Kurssimateriaali ja kurssitehtävät
 - ChatGPT: tarkemmin käytöstä koodin seassa
 - React Native Paper: Icon Button, https://oss.callstack.com/react-native-paper/docs/components/IconButton/
+- React Native Paper, Icons: https://oss.callstack.com/react-native-paper/docs/guides/icons/
 */
 
 const db = getDatabase(app);
 
-export default function MyTea() {
+export default function MyTea({ navigation }) {
 
   const [teas, setTeas] = useState([]);
 
@@ -55,12 +55,21 @@ export default function MyTea() {
             <Card.Title title={item.name} />
             <Card.Content>
               <Text variant='bodyMedium'>Paikka: {item.place}</Text>
-              <IconButton
-              icon='delete-outline'
-              size={20}
-              iconColor='red'
-              onPress={() => deleteItem(item.id)}
-              />
+
+              <View style={styles.flex}>
+                <IconButton
+                  icon='pencil'
+                  size={20}
+                  onPress={() => navigation.navigate('Päivitä', { id: item.id })} //ChatGPT muotoilussa apuna
+
+                />
+                <IconButton
+                  icon='delete-outline'
+                  size={20}
+                  onPress={() => deleteItem(item.id)}
+                />
+              </View>
+
             </Card.Content>
           </Card>
         }
@@ -81,5 +90,9 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 5,
+  },
+  flex: {
+    flexDirection: 'row',
+    marginTop: 5,
   }
 });

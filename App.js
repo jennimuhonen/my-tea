@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider } from 'react-native-paper';
 import Home from './Home';
 import AddTea from './AddTea';
-import MyTea from './MyTea';
+import MyTeaStack from './MyTeaStack';
 
 /*
 Lähteet:
@@ -19,7 +19,7 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen name="Koti" component={Home} />
-          <Tab.Screen name="Minun teeni" component={MyTea} />
+          <Tab.Screen name="Minun teeni" options={{ headerShown: false }} component={MyTeaStack} />
           <Tab.Screen name="Lisää tee" component={AddTea} />
         </Tab.Navigator>
       </NavigationContainer>
