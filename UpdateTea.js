@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Keyboard, Alert } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import { app } from './firebaseConfig';
 import { getDatabase, ref, get, update } from 'firebase/database';
 import { useState, useEffect } from 'react';
@@ -30,15 +31,48 @@ export default function UpdateTea({ route }) {
           name: data.name || '',
           place: data.place || ''
         });
-        console.log(data);
+        console.log("UPDATE TEA", data);
       }
     };
 
     fetchItem();
   }, [id]);
 
+
+
+  //ChatGPT:n suosituksesta lisäsin asyncin, mutta sain toimimaan ilmankin apua.
+
+  const updateItem = async () => {
+    if (tea.name && tea.place) {
+      try {
+        await update(ref(db, 'items/' + id), tea);
+        Keyboard.dismiss();
+      } catch (error) {
+        Alert.alert('Virhe', 'Päivitys ei onnistunut')
+      }
+    } else {
+      Alert.alert('Virhe', 'Tallennus ei onnistunut')
+    }
+  }
+
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        label='Teen nimi'
+        onChangeText={text => setTea({ ...tea, name: text })}
+        value={tea.name}
+      />
+      <TextInput
+        style={styles.textInput}
+        label='Ostopaikka'
+        onChangeText={text => setTea({ ...tea, place: text })}
+        value={tea.place}
+      />
+
+      <Button mode='contained' icon='content-save' onPress={updateItem}>
+        Päivitä
+      </Button>
 
     </View>
   );
@@ -49,6 +83,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
+  textInput: {
+    width: '90%',
+    margin: 3,
+  }
 });

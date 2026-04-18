@@ -28,7 +28,7 @@ export default function MyTea({ navigation }) {
           ...value
         }));
         setTeas(itemsArray);
-        console.log(itemsArray)
+        console.log("MY TEA", itemsArray)
       } else {
         setTeas([]);
       }
