@@ -5,6 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Home from './Home';
 import AddTea from './AddTea';
 import MyTeaStack from './MyTeaStack';
+import TakePicture from './TakePicture';
 
 /*
 Lähteet:
@@ -39,6 +40,7 @@ export default function App() {
           <Tab.Screen name="Koti" component={Home} />
           <Tab.Screen name="Minun teeni" options={{ headerShown: false }} component={MyTeaStack} />
           <Tab.Screen name="Lisää tee" component={AddTea} />
+          <Tab.Screen name="Ota kuva" component={TakePicture} />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

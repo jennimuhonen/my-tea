@@ -42,6 +42,3 @@ yarn-error.*
 
 # firebase
 firebaseConfig.js
-
-#työn alla
-TakePicture.js
