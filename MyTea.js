@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, Image } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
 import { app } from './firebaseConfig';
 import { getDatabase, ref, onValue, remove } from 'firebase/database';
@@ -55,6 +55,14 @@ export default function MyTea({ navigation }) {
             <Card.Title title={item.name} />
             <Card.Content>
               <Text variant='bodyMedium'>Paikka: {item.place}</Text>
+              {item.picture && (
+                <Image
+                  style={{ width: '70%', height: '200', marginTop: '10' }} //ChatGPT:n avulla ratkaisin kuvien näkyvyysongelman, prosentit eivät toimineet heightissä.
+                  resizeMode="cover"
+                  source={{ uri: item.picture }}
+                />
+              )}
+
 
               <View style={styles.flex}>
                 <IconButton

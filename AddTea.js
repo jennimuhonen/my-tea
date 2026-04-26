@@ -1,6 +1,6 @@
 import { StyleSheet, View, Keyboard, Alert, Image } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { app } from './firebaseConfig';
 import { getDatabase, ref, push } from 'firebase/database';
 
@@ -15,10 +15,12 @@ Lähteet:
 const db = getDatabase(app);
 
 export default function AddTea({ navigation, route }) {
-  const savedUri = route?.params?.savedUri;
+  const [savedUri, setSavedUri] = useState(route?.params?.savedUri); //Muotoiluun apua ChatGPT:ltä.
+  const [picture, setPicture] = useState();
   const [tea, setTea] = useState({
     name: '',
-    place: ''
+    place: '',
+    picture: route?.params?.savedUri || '' //ChatGPT:ltä routen muotoilu tänne.
   });
 
   const saveItem = () => {
@@ -26,8 +28,10 @@ export default function AddTea({ navigation, route }) {
       push(ref(db, 'items/'), tea);
       setTea({
         name: '',
-        place: ''
+        place: '',
+        picture: ''
       })
+      setSavedUri(null);
       Keyboard.dismiss(); //Lähde: ChatGPT
     } else {
       Alert.alert('Tallennus ei onnistunut', 'Lisää nimi ja paikka.')
@@ -35,7 +39,6 @@ export default function AddTea({ navigation, route }) {
   }
 
   const image = () => {
-    console.log("URI:", savedUri);
     if (savedUri) {
       return (
         <Image
