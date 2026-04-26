@@ -3,9 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaperProvider } from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Home from './Home';
-import AddTea from './AddTea';
 import MyTeaStack from './MyTeaStack';
-import TakePicture from './TakePicture';
+import AddTeaStack from './AddTeaStack';
 
 /*
 Lähteet:
@@ -39,8 +38,7 @@ export default function App() {
         >
           <Tab.Screen name="Koti" component={Home} />
           <Tab.Screen name="Minun teeni" options={{ headerShown: false }} component={MyTeaStack} />
-          <Tab.Screen name="Lisää tee" component={AddTea} />
-          <Tab.Screen name="Ota kuva" component={TakePicture} />
+          <Tab.Screen name="Lisää tee" options={{ headerShown: false }} component={AddTeaStack} />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>

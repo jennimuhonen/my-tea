@@ -7,13 +7,13 @@ import * as FileSystem from 'expo-file-system/legacy';
 /*
 Lähde:
 - Kurssimateriaali, https://haagahelia.github.io/mobilecourse/docs/ExpoSDK/camera
-- ChatGPT, jonka kanssa askartelimme tallennuksen mukaan. ChatGPT antoi ohjeet Legacy-versioon, mutta sanoi, että uudempi on huomattavasti monimutkaisempi. Tyydyin siis yksinkertaisempaan.
+- ChatGPT:
+    * Askartelimme yhdessä tallennuksen mukaan. ChatGPT antoi ohjeet Legacy-versioon, mutta sanoi, että uudempi on huomattavasti monimutkaisempi. Tyydyin siis yksinkertaisempaan.
+    * Lisäksi apua virheenkorjauksessa.
 */
 
 
-export default function TakePicture() {
-    /* const [photoName, setPhotoName] = useState('');
-    const [photoBase64, setPhotoBase64] = useState(''); */
+export default function TakePicture({ navigation, route }) {
     const [permission, requestPermission] = useCameraPermissions();
     const [savedUri, setSavedUri] = useState(null);
 
@@ -28,21 +28,12 @@ export default function TakePicture() {
     }
 
     if (!permission.granted) {
-        // Camera permissions are not granted yet.
         return (
             <View style={styles.container}>
                 <Button mode='contained' onPress={requestPermission}>Käytä kameraa</Button>
             </View>
         );
     }
-
-    /* const snap = async () => {
-        if (camera) {
-            const photo = await camera.current.takePictureAsync({ base64: true });
-            setPhotoName(photo.uri);
-            setPhotoBase64(photo.base64);
-        }
-    }; */
 
     const snapAndSave = async () => {
         if (!camera.current) return;
@@ -60,32 +51,39 @@ export default function TakePicture() {
         setSavedUri(newPath);
     };
 
+    const clearImage = () => {
+        setSavedUri(null)
+    }
 
-
-
+    const image = () => {
+        console.log("URI:", savedUri);
+        if (savedUri) {
+            return (
+                <View>
+                    <Image
+                        style={{ flex: 1, minWidth: "100%" }}
+                        resizeMode="cover"
+                        source={{ uri: savedUri }}
+                    />
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Button mode='contained' onPress={() => navigation.navigate('Lisää tee', { savedUri: savedUri })}>Tallenna kuva</Button>
+                        <Button mode='contained' onPress={clearImage}>Ota uusi kuva</Button>
+                    </View>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <CameraView style={{ flex: 1, minWidth: "100%" }} ref={camera} />
+                    <Button mode='contained' style={{ marginBottom: 10 }} onPress={snapAndSave}>Ota kuva</Button>
+                </View>
+            )
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <CameraView style={{ flex: 1, minWidth: "100%" }} ref={camera} />
-            {/*<Button title="Take Photo" onPress={snap} />
-             <View style={{ flex: 1 }}>
-                {photoName && photoBase64 ? (
-                    <>
-                        <Image style={{ flex: 1 }} source={{ uri: photoName }} />
-                        <Image style={{ flex: 1 }} source={{ uri: `data:image/jpg;base64,${photoBase64}` }} />
-                    </>
-                ) : (
-                    <Text>No photo taken yet.</Text>
-                )}
-            </View> */}
-            <View style={{ flex: 1 }}>
-                {savedUri ? (
-                    <Image style={{ flex: 1 }} source={{ uri: savedUri }} />
-                ) : (
-                    <Text>No photo taken yet.</Text>
-                )}
-            </View>
-            <Button mode='contained' style={{ marginBottom: 10 }} onPress={snapAndSave}>Ota kuva</Button>
+            {image()}
         </View>
     );
 }

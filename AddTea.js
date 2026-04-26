@@ -1,4 +1,4 @@
-import { StyleSheet, View, Keyboard, Alert } from 'react-native';
+import { StyleSheet, View, Keyboard, Alert, Image } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { useState } from 'react';
 import { app } from './firebaseConfig';
@@ -7,12 +7,15 @@ import { getDatabase, ref, push } from 'firebase/database';
 /*
 Lähteet:
 - Kurssimateriaali
-- ChatGPT (tarkemmin käytöstä koodissa)
+- ChatGPT:
+    *Keskusteltu siitä, kuinka saada route toimimaan myös takaisin tähän suuntaan.
+    *Tarkemmin muusta käytöstä koodissa.
 */
 
 const db = getDatabase(app);
 
-export default function AddTea() {
+export default function AddTea({ navigation, route }) {
+  const savedUri = route?.params?.savedUri;
   const [tea, setTea] = useState({
     name: '',
     place: ''
@@ -31,6 +34,31 @@ export default function AddTea() {
     }
   }
 
+  const image = () => {
+    console.log("URI:", savedUri);
+    if (savedUri) {
+      return (
+        <Image
+          style={{ width: '70%', height: '35%' }}
+          resizeMode="cover"
+          source={{ uri: savedUri }}
+        />
+      )
+    }
+  }
+
+  const addPictureButton = () => {
+    if (savedUri) {
+      return (
+        <Button mode='contained' onPress={() => navigation.navigate('Ota kuva')}>Vaihda kuva</Button>
+      )
+    } else {
+      return (
+        <Button mode='contained' onPress={() => navigation.navigate('Ota kuva')}>Lisää kuva</Button>
+      )
+    }
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -45,6 +73,9 @@ export default function AddTea() {
         onChangeText={text => setTea({ ...tea, place: text })}
         value={tea.place}
       />
+
+      {image()}
+      {addPictureButton()}
 
       <Button mode='contained' icon='content-save' onPress={saveItem}>
         Tallenna
