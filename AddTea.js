@@ -8,20 +8,31 @@ import { getDatabase, ref, push } from 'firebase/database';
 Lähteet:
 - Kurssimateriaali
 - ChatGPT:
-    *Keskusteltu siitä, kuinka saada route toimimaan myös takaisin tähän suuntaan.
-    *Tarkemmin muusta käytöstä koodissa.
+    * Keskusteltu siitä, kuinka saada route toimimaan myös takaisin tähän suuntaan.
+    * Tarkemmin routen muusta käytöstä koodissa.
+    * Virheenkorjausta.
 */
 
 const db = getDatabase(app);
 
 export default function AddTea({ navigation, route }) {
-  const [savedUri, setSavedUri] = useState(route?.params?.savedUri); //Muotoiluun apua ChatGPT:ltä.
-  const [picture, setPicture] = useState();
+  //const [savedUri, setSavedUri] = useState(route?.params?.savedUri); //Muotoiluun apua ChatGPT:ltä.
+  //const [picture, setPicture] = useState();
   const [tea, setTea] = useState({
     name: '',
     place: '',
     picture: route?.params?.savedUri || '' //ChatGPT:ltä routen muotoilu tänne.
   });
+
+  //ChatGPT kehotti lisäämään, jotta vaihdettu kuva päivittyy.
+  useEffect(() => {
+    if (route?.params?.savedUri) {
+      setTea(prev => ({
+        ...prev,
+        picture: route.params.savedUri
+      }));
+    }
+  }, [route?.params?.savedUri]);
 
   const saveItem = () => {
     if (tea.name && tea.place) {
@@ -31,7 +42,6 @@ export default function AddTea({ navigation, route }) {
         place: '',
         picture: ''
       })
-      setSavedUri(null);
       Keyboard.dismiss(); //Lähde: ChatGPT
     } else {
       Alert.alert('Tallennus ei onnistunut', 'Lisää nimi ja paikka.')
@@ -39,19 +49,19 @@ export default function AddTea({ navigation, route }) {
   }
 
   const image = () => {
-    if (savedUri) {
+    if (tea.picture) {
       return (
         <Image
           style={{ width: '70%', height: '35%' }}
           resizeMode="cover"
-          source={{ uri: savedUri }}
+          source={{ uri: tea.picture }}
         />
       )
     }
   }
 
   const addPictureButton = () => {
-    if (savedUri) {
+    if (tea.picture) {
       return (
         <Button mode='contained' onPress={() => navigation.navigate('Ota kuva')}>Vaihda kuva</Button>
       )

@@ -9,7 +9,8 @@ Lähde:
 - Kurssimateriaali, https://haagahelia.github.io/mobilecourse/docs/ExpoSDK/camera
 - ChatGPT:
     * Askartelimme yhdessä tallennuksen mukaan. ChatGPT antoi ohjeet Legacy-versioon, mutta sanoi, että uudempi on huomattavasti monimutkaisempi. Tyydyin siis yksinkertaisempaan.
-    * Lisäksi apua virheenkorjauksessa.
+    * goBack navigaten sijaan -> korjasi tyhjenevien kenttien ongelman
+    * Apua virheenkorjauksessa.
 */
 
 
@@ -66,7 +67,7 @@ export default function TakePicture({ navigation, route }) {
                         source={{ uri: savedUri }}
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Button mode='contained' onPress={() => navigation.navigate('Lisää tee', { savedUri: savedUri })}>Tallenna kuva</Button>
+                        <Button mode='contained' onPress={() => navigation.goBack()}>Tallenna kuva</Button>
                         <Button mode='contained' onPress={clearImage}>Ota uusi kuva</Button>
                     </View>
                 </View>
