@@ -11,6 +11,7 @@ Lähde:
     * Askartelimme yhdessä tallennuksen mukaan. ChatGPT antoi ohjeet Legacy-versioon, mutta sanoi, että uudempi on huomattavasti monimutkaisempi. Tyydyin siis yksinkertaisempaan.
     * goBack navigaten sijaan -> korjasi tyhjenevien kenttien ongelman
     * Apua virheenkorjauksessa.
+    * Apua navigoinnin ja parametrien viennin saamisessa toimivaksi.
 */
 
 
