@@ -18,6 +18,7 @@ export default function UpdateTea({ route }) {
     name: '',
     place: ''
   });
+  const [message, setMessage] = useState('');
 
   //ChatGPT:tä hyödynnetty fetchItemia rakentaessa. Keskustelimme vaihtoehdoista (get/onValue) ja ChatGPT näytti kuinka kannattaa muotoilla.
 
@@ -47,6 +48,7 @@ export default function UpdateTea({ route }) {
       try {
         await update(ref(db, 'items/' + id), tea);
         Keyboard.dismiss();
+        setMessage('Tiedot tallennettu.')
       } catch (error) {
         Alert.alert('Virhe', 'Päivitys ei onnistunut')
       }
@@ -73,6 +75,8 @@ export default function UpdateTea({ route }) {
       <Button mode='contained' icon='content-save' onPress={updateItem}>
         Päivitä
       </Button>
+
+      <Text>{message}</Text>
 
     </View>
   );

@@ -126,7 +126,7 @@ export default function AddTea({ navigation, route }) {
       {imageNoImage()}
       {showTextInput()}
       {showImage()}
-      {addPictureButton()}
+      {/* {addPictureButton()} */}
 
       <Text>{message}</Text>
 
