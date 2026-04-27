@@ -17,6 +17,7 @@ Lähde:
 export default function TakePicture({ navigation, route }) {
     const [permission, requestPermission] = useCameraPermissions();
     const [savedUri, setSavedUri] = useState(null);
+    const id = route?.params?.id;
 
     const camera = useRef(null);
 
@@ -52,6 +53,17 @@ export default function TakePicture({ navigation, route }) {
         setSavedUri(newPath);
     };
 
+    const saveImage = async () => {
+        if (id) {
+            navigation.navigate('Minun teeni', { savedUri, id });
+        } else {
+            navigation.navigate({
+                name: 'Lisää tee',
+                params: { savedUri }
+            });
+        }
+    }
+
     const clearImage = () => {
         setSavedUri(null)
     }
@@ -67,7 +79,7 @@ export default function TakePicture({ navigation, route }) {
                         source={{ uri: savedUri }}
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Button mode='contained' onPress={() => navigation.navigate({name: 'Lisää tee', params: {savedUri}})}>Tallenna kuva</Button>
+                        <Button mode='contained' onPress={saveImage}>Tallenna kuva</Button>
                         <Button mode='contained' onPress={clearImage}>Ota uusi kuva</Button>
                     </View>
                 </View>

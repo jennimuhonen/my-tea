@@ -10,7 +10,7 @@ Lähteet:
 - Kurssimateriaali
 - ChatGPT:
     * Keskusteltu siitä, kuinka saada route toimimaan myös takaisin tähän suuntaan.
-    * Tarkemmin routen muusta käytöstä koodissa.
+    * Tarkemmin muusta käytöstä koodissa.
     * UseFocusEffect: ratkaisemaan tarpeettomasti talteen jäävän datan haasteet.
     * Virheenkorjausta.
 */

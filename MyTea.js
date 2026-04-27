@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View, FlatList, Alert, Image } from 'react-native';
 import { Card, IconButton } from 'react-native-paper';
 import { app } from './firebaseConfig';
-import { getDatabase, ref, onValue, remove } from 'firebase/database';
-import { useState, useEffect } from 'react';
+import { getDatabase, ref, onValue, remove, update } from 'firebase/database';
+import { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 /*
 Lähteet:
@@ -14,9 +15,11 @@ Lähteet:
 
 const db = getDatabase(app);
 
-export default function MyTea({ navigation }) {
+export default function MyTea({ navigation, route }) {
 
   const [teas, setTeas] = useState([]);
+  const savedUri = route?.params?.savedUri;
+  const id = route?.params?.id;
 
   useEffect(() => {
     const itemsRef = ref(db, 'items/');
@@ -28,20 +31,45 @@ export default function MyTea({ navigation }) {
           ...value
         }));
         setTeas(itemsArray);
-        console.log("MY TEA", itemsArray)
+        // console.log("MY TEA", itemsArray)
       } else {
         setTeas([]);
       }
     })
   }, [])
 
-  //deleteItemia muokattu toimivaksi ChatGPT:n avustuksella
+  //useEffect ei aktivoitunut, joten ChatGPT kehotti käyttämään useFocusEffectiä
+  useFocusEffect(
+    useCallback(() => {
+      if (savedUri && id) {
+        changePicture(savedUri, id);
+      }
+    }, [savedUri, id])
+  );
 
+  //deleteItemia muokattu toimivaksi ChatGPT:n avustuksella
   const deleteItem = async (id) => {
     try {
       await remove(ref(db, 'items/' + id));
     } catch (error) {
       Alert.alert('Virhe', 'Poistaminen ei onnistunut');
+    }
+  };
+
+  //apuna ChatGPT + kuvan poistamisen myötä muokkasimme myös sitä millä perusteella kuva näytetään
+  const deletePicture = async (id) => {
+    try {
+      await update(ref(db, 'items/' + id), { picture: '' });
+    } catch (error) {
+      Alert.alert('Virhe', 'Kuvan poistaminen ei onnistunut');
+    }
+  };
+
+  const changePicture = async (savedUri, id) => {
+    try {
+      await update(ref(db, 'items/' + id), { picture: savedUri });
+    } catch (error) {
+      Alert.alert('Virhe', 'Kuvan vaihtaminen ei onnistunut');
     }
   };
 
@@ -55,7 +83,7 @@ export default function MyTea({ navigation }) {
             <Card.Title title={item.name} />
             <Card.Content>
               <Text variant='bodyMedium'>Paikka: {item.place}</Text>
-              {item.picture && (
+              {typeof item.picture === 'string' && item.picture.length > 0 && (
                 <Image
                   style={{ width: '70%', height: '200', marginTop: '10' }} //ChatGPT:n avulla ratkaisin kuvien näkyvyysongelman, prosentit eivät toimineet heightissä.
                   resizeMode="cover"
@@ -69,7 +97,16 @@ export default function MyTea({ navigation }) {
                   icon='pencil'
                   size={20}
                   onPress={() => navigation.navigate('Päivitä', { id: item.id })} //ChatGPT muotoilussa apuna
-
+                />
+                <IconButton
+                  icon='camera-outline'
+                  size={20}
+                  onPress={() => navigation.navigate('Ota kuva', { id: item.id })}
+                />
+                <IconButton
+                  icon='camera-off'
+                  size={20}
+                  onPress={() => deletePicture(item.id)}
                 />
                 <IconButton
                   icon='delete-outline'
