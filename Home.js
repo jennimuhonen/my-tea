@@ -4,8 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={{fontSize: 20, paddingBottom: 20}}>MyTea</Text>
+      <Text>Sovelluksessa voit selata kirjaamiasi teitä ja lisätä uusia.</Text>
     </View>
   );
 }
@@ -16,5 +16,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 30,
   },
 });
